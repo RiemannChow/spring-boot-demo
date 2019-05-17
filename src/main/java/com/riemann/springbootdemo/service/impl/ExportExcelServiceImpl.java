@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -60,13 +62,13 @@ public class ExportExcelServiceImpl implements ExportExcelService {
             wb.setSheetName(i, sheetName);
 
             for(TabularData tab : tabularData) {
-                HSSFRow row = sheet.getRow(tab.getFirstRow() - 1);
+                HSSFRow row = sheet.getRow(tab.getLastRow() - 1);
                 if (row == null) {
-                    row = sheet.createRow(tab.getFirstRow() - 1);//创建所需的行数
+                    row = sheet.createRow(tab.getLastRow() - 1);//创建所需的行数
                 }
-                HSSFCell cell = row.getCell(tab.getFirstCol() - 1);//设置单元格的数据
+                HSSFCell cell = row.getCell(tab.getLastCol() - 1);//设置单元格的数据
                 if (cell == null) {
-                    cell = row.createCell(tab.getFirstCol() - 1);
+                    cell = row.createCell(tab.getLastCol() - 1);
                     cell.setCellValue(tab.getTabularContent());
                 }
                 //合并单元格
@@ -80,7 +82,7 @@ public class ExportExcelServiceImpl implements ExportExcelService {
             apiResponse.setStatusCode("200");
             apiResponse.setMessage("export excel success");
         } else {
-            apiResponse.setStatusCode("600");
+            apiResponse.setStatusCode("400");
             apiResponse.setMessage("export excel failed");
         }
         return apiResponse;
@@ -88,19 +90,33 @@ public class ExportExcelServiceImpl implements ExportExcelService {
 
     public boolean downloadExcel(HSSFWorkbook wb) {
         boolean flag = true;
-        String filePath = "D:\\excel";
+        Date date = new Date();
+        String sdf = "";
+        sdf = new SimpleDateFormat("yyyy-MM-dd").format(date.getTime());
+        String filePath = "D:\\excel\\excel导出测试表" + sdf + ".xls";
         File file = new File(filePath);
-        if (!file.exists()) {
+
+        /*if (!file.exists()) {
             flag = false;
             logger.info("The file is not exists.");
-        }
+        }*/
+        FileOutputStream fos = null;
         try {
-            FileOutputStream fos = new FileOutputStream(filePath);
+
+            fos = new FileOutputStream(file);
             wb.write(fos);
-            fos.close();
         } catch (IOException e) {
             e.printStackTrace();
             flag = false;
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                }catch (IOException e) {
+                    e.printStackTrace();
+                    flag = false;
+                }
+            }
         }
         return flag;
     }
