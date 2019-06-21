@@ -1,36 +1,49 @@
 server:
   port: 8080
+  servlet:
+    context-path: /
+    error:
+      path: /error
 
+error:
+  path: /error
+
+# 数据库访问配置
+# 主数据源，默认的
 spring:
   datasource:
-    name: localhost_3306
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: DES@2QD3nRdKv1U=
+
     type: com.alibaba.druid.pool.DruidDataSource
-    #druid相关配置
-    druid:
-      #监控统计拦截的filters
-      filters: stat
-      driver-class-name: com.mysql.jdbc.Driver
-      #基本属性
-      url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
-      username: root
-      password: 123
-      #配置初始化大小/最小/最大
-      initial-size: 1
-      min-idle: 1
-      max-active: 20
-      #获取连接等待超时时间
-      max-wait: 60000
-      #间隔多久进行一次检测，检测需要关闭的空闲连接
-      time-between-eviction-runs-millis: 60000
-      #一个连接在池中最小生存的时间
-      min-evictable-idle-time-millis: 300000
-      validation-query: SELECT 'x'
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
-      #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
-      pool-prepared-statements: false
-      max-pool-prepared-statement-per-connection-size: 20
+
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+  mvc:
+    static-path-pattern:
+
+
+# Logger Config
+logging:
+  level:
+    com.baomidou.mybatisplus.samples.quickstart: debug
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
@@ -43,6 +56,21 @@ pagehelper:
   supportMethodsArguments: true
   params: count=countSql
   returnPageInfo: check
+
+#配置视图版块位置
+freemarker:
+  template-loader-path: classpath:/templates
+
+#mvc配置前缀和后缀
+mvc:
+  view:
+    prefix: /
+    suffix: .html
+
+# 配置文件加密key
+jasypt:
+  encryptor:
+    password: riemann
 
 
 
