@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.UnsupportedEncodingException;
-
 /**
  * @author riemann
  * @date 2019/06/13 22:54
@@ -20,40 +18,38 @@ class EncryptablePropertyConfig {
 
     @Bean(name="encryptablePropertyResolver")
     public EncryptablePropertyResolver encryptablePropertyResolver() {
+
         return new EncryptionPropertyResolver();
     }
 
-     class EncryptionPropertyResolver implements EncryptablePropertyResolver {
+    class EncryptionPropertyResolver implements EncryptablePropertyResolver {
 
         @Override
         public String resolvePropertyValue(String value) {
             if (StringUtils.isBlank(value)) {
                 return value;
             }
-            //值以DES@开头的均为DES加密，需要解密
+            //值以DES@开头的均为DES加密，需要解密throws Exception
             if (value.startsWith("DES@")) {
-                return resolveDESValue(value.substring(4));
+                try {
+                    return resolveDESValue(value.substring(4));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             //不需要解密的值直接返回
             return value;
         }
 
-        private String resolveDESValue(String value) {
+        private String resolveDESValue(String value) throws Exception {
             //自定义DES密文解密
-            //return JasyptUtil.decyptString(ParseSystemUtil.parseHexStr2Byte(value)));
             logger.info("AES@ sub value :" + value);
-            return getOddValue(ParseSystemUtil.parseHexStr2Byte(value));
+            String riemann = JasyptUtil.decryption(value, "riemann");
+            logger.info("riemann DES: " + riemann);
+            return riemann;
         }
 
-         private String getOddValue(String parseHexStr2Byte) {
-             StringBuilder result = new StringBuilder();
-             for (int i = 0; i < parseHexStr2Byte.length(); i++) {
-                 if (i % 2 == 0) {
-                     result.append(parseHexStr2Byte.charAt(i));
-                 }
-             }
-             return result.toString();
-         }
     }
+
 
 }
