@@ -1,4 +1,4 @@
-package com.riemann.springbootdemo.util.configuration;
+package com.riemann.springbootdemo.config;
 
 import com.riemann.springbootdemo.service.impl.EmailTask;
 import org.quartz.*;
