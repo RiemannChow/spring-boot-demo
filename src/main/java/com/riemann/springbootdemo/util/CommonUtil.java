@@ -94,6 +94,23 @@ public class CommonUtil {
     }
 
     /**
+     * json转map格式
+     * @param jsonObject
+     * @return
+     */
+    public static Map<String, Object> json2Map(JSONObject jsonObject) {
+        if (jsonObject == null) {
+            return new HashMap<String, Object>(1);
+        }
+        Map<String, Object> map = new HashMap<String, Object>((int) (jsonObject.size() / 0.75 + 1));
+        Set<Map.Entry<String, Object>> entrySet = jsonObject.entrySet();
+        for (Map.Entry<String, Object> entry : entrySet) {
+            map.put(entry.getKey(), entry.getValue());
+        }
+        return map;
+    }
+
+    /**
      * 构建返回json字符串
      * @param resultCode
      * @param msg
