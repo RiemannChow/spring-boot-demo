@@ -78,6 +78,22 @@ public class CommonUtil {
     }
 
     /**
+     * map转json格式
+     * @param map
+     * @return
+     */
+    public static JSONObject map2Json(Map<String, Object> map) {
+        JSONObject jsonObject = new JSONObject();
+        if (map != null) {
+            Set<Map.Entry<String, Object>> entrySet = map.entrySet();
+            for (Map.Entry<String, Object> entry : entrySet) {
+                jsonObject.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return jsonObject;
+    }
+
+    /**
      * 构建返回json字符串
      * @param resultCode
      * @param msg
