@@ -1,9 +1,11 @@
 package com.riemann.springbootdemo.util;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 import java.text.Normalizer;
 import java.util.*;
@@ -108,6 +110,22 @@ public class CommonUtil {
             map.put(entry.getKey(), entry.getValue());
         }
         return map;
+    }
+
+    /**
+     * list转jsonArray格式
+     * @param list
+     * @return
+     */
+    public static JSONArray list2JsonArray(List<Map<String, Object>> list) {
+        JSONArray jsonArray = new JSONArray();
+        if (CollectionUtils.isEmpty(list)) {
+            return jsonArray;
+        }
+        for (int i = 0; i < list.size(); i++) {
+            jsonArray.add(map2Json(list.get(i)));
+        }
+        return jsonArray;
     }
 
     /**
