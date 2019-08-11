@@ -154,8 +154,8 @@ public class IPUtil {
         try {
             url = new URL(urlStr);
             connection = (HttpURLConnection) url.openConnection();// 新建连接实例
-            connection.setConnectTimeout(18000);// 设置连接超时时间，单位毫秒
-            connection.setReadTimeout(18000);// 设置读取数据超时时间，单位毫秒
+            connection.setConnectTimeout(20000);// 设置连接超时时间，单位毫秒
+            connection.setReadTimeout(20000);// 设置读取数据超时时间，单位毫秒
             connection.setDoOutput(true);// 是否打开输出流 true|false
             connection.setDoInput(true);// 是否打开输入流true|false
             connection.setRequestMethod("GET");// 提交方法POST|GET
