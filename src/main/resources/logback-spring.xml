@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!--根节点 , logback的全局配置 , 包含3个属性
+    scan : 当文件发生变更时是否重载 , 默认值ture
+    scanPeriod : 监测文件的间隔时间 , 即每隔多少时间扫描一次配置文件 仅当scan=true时生效. 默认间隔时间1min , 如果不写单位默认是毫秒;
+    debug : 是否为debug模式 , 为true时会打印出logack内部日志 , 便于查看logback实时信息 . 默认值false
+    <configuration scan="true" scanPeriod="60 seconds" debug="false"> -->
+
+    <!-- 定义变量 , 在配置文件其他地方可通过${变量名}访问 -->
+    <!--<property name="LOG_INFO_HOME" value="/Users/riemann/Documents/log" />-->
+
+    <!-- ConsoleAppender , 将日志输出到控制台 . 有encoder和target两个子节点(新版本有filter子节点 , 在下文中详细说明) -->
+    <appender name="CONSOLE-LOG" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50}-%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- FileAppender , 将日志输出到文件 . 有file/append/encoder/prudent四个子节点(新版本有filter子节点 , 在下文中详细说明) -->
+    <appender name="INFO-LOG"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>DENY</onMatch>
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 每天一归档 -->
+            <fileNamePattern>${LOG_INFO_HOME}//%d{yyyy-MM-dd}_%i.log
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 最大64MB 超过最大值，会重新建一个文件 -->
+                <maxFileSize>64 MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss:SSS} %-5level [%thread] %logger{50}-%L %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ERROR-LOG"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 每天一归档 -->
+            <fileNamePattern>${LOG_ERROR_HOME}//%d{yyyy-MM-dd}_%i.log
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 最大64MB 超过最大值，会重新建一个文件 -->
+                <maxFileSize>64 MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss:SSS} %-5level [%thread] %logger{50}-%L %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- logger 日志返回/级别及输出目标配置 有必填属性name和选填属性level/additivity , 一个appender-ref 子节点(可配置1个或多个)
+       name : 指定遵守该logger约束的一个包或具体的某个类
+       level : 日志级别 ,有以下值TRACE, DEBUG, INFO, WARN, ERROR, ALL, OFF , 不区分大小写
+       additivity : 是否向上级logger传递日志信息 , 默认为ture . (如果上级logger也输出日志 , 则会输出两份 . 所以通常情况下配置为false)
+    -->
+    <logger name="org.springframework.web" level="INFO" />
+    <logger name="org.springframework" level="INFO" />
+    <logger name="com.riemann.springbootdemo" level="DEBUG" />
+
+    <!-- root本身也是一个logger节点(相当于name="root"的logger) , 但仅能配置一个 , 是所有logger的父级(可以理解为Java中的Object) , 只有一个level属性, 默认值DEBUG -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE-LOG" />
+        <appender-ref ref="INFO-LOG" />
+        <appender-ref ref="ERROR-LOG" />
+    </root>
+</configuration>
