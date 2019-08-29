@@ -36,7 +36,7 @@ public class TaskConfig {
     @Bean
     public CronTrigger emailTaskyCronTrigger() {
         // Cron类型：通过cron表达式设置触发规则
-        CronScheduleBuilder csb = CronScheduleBuilder.cronSchedule(String.format("0 */1 * * * ?"))
+        CronScheduleBuilder csb = CronScheduleBuilder.cronSchedule(String.format("0 0 0 15 * ?")) //每月15号
                 .withMisfireHandlingInstructionDoNothing();
 
         // 一个Trigger只对应一个Job，Schedule调度器调度Trigger执行对应的Job
