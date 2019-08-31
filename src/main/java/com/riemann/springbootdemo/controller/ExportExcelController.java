@@ -4,11 +4,8 @@ import com.riemann.springbootdemo.model.ApiResponse;
 import com.riemann.springbootdemo.model.ExportExcelData;
 import com.riemann.springbootdemo.service.ExportExcelService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.SpringServletContainerInitializer;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 
 /**
  * Excel导出 Controller
@@ -17,12 +14,13 @@ import javax.annotation.Resource;
  * @date 2019/04/28 21:37
  */
 @RestController
+@RequestMapping(value = "/export")
 public class ExportExcelController {
 
     @Autowired
     private ExportExcelService exportExcelService;
 
-    @PostMapping("/export/exportExcel")
+    @RequestMapping(value = "/exportExcel", method= RequestMethod.POST)
     public ApiResponse exportExcel(@RequestBody ExportExcelData eeData) {
         ApiResponse apiResponse = new ApiResponse();
         if (eeData == null) {
