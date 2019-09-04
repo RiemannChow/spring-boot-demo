@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @CrossOrigin(origins = "http://xx-domain.com", maxAge = 3600)
 public class ControllerAnnotationCors {
 
-    @RequestMapping("/hello")
+   /* @RequestMapping("/hello")
     @ResponseBody
     public String index( ){
         return "Hello World";
     }
-
+*/
 }
