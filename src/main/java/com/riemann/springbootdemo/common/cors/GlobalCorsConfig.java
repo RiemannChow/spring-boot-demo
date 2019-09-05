@@ -16,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class GlobalCorsConfig {
 
     // 第一种方式:返回新的CorsFilter(全局跨域)
-    @Bean
+    /*@Bean
     public CorsFilter corsFilter() {
         //1.添加CORS配置信息
         CorsConfiguration config = new CorsConfiguration();
@@ -37,7 +37,7 @@ public class GlobalCorsConfig {
 
         //3.返回新的CorsFilter.
         return new CorsFilter(configSource);
-    }
+    }*/
 
     // 第二种方式:重写WebMvcConfigurer（全局跨域）
     @Bean
