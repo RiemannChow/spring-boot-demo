@@ -16,7 +16,7 @@ public class MethodAnnotationCors {
     @RequestMapping("/hello")
     @ResponseBody
     @CrossOrigin("http://localhost:8080")
-    public String index( ){
+    public String index(){
         return "Hello World";
     }
 
