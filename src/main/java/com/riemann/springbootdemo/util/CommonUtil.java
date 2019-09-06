@@ -235,6 +235,11 @@ public class CommonUtil {
         }
     }
 
+    /**
+     * 校验时间是否为 yyyyMMddHHmmss 格式
+     * @param str
+     * @return
+     */
     public static boolean checkDateTime(String str) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         LocalDateTime ldt = null;
