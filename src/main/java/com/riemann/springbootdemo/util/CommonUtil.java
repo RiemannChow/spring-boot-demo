@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import java.text.Normalizer;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -233,6 +235,18 @@ public class CommonUtil {
         }
     }
 
+    public static boolean checkDateTime(String str) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        LocalDateTime ldt = null;
+        boolean flag = true;
+        try {
+            ldt = LocalDateTime.parse(str, dtf);
+        } catch (Exception e) {
+            flag = false;
+        }
+        return flag;
+    }
+
 
     public static void main(String[] args) {
         /*Calendar calendar = Calendar.getInstance();
@@ -246,6 +260,7 @@ public class CommonUtil {
 
         //isValidDate("20190810240000");
 
+        //System.out.println(checkDateTime("20190907232500"));
     }
 
 }
