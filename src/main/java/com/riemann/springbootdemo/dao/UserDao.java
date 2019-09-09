@@ -1,6 +1,7 @@
 package com.riemann.springbootdemo.dao;
 
 import com.riemann.springbootdemo.model.UserDomain;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
