@@ -84,7 +84,6 @@
             <artifactId>druid</artifactId>
             <version>1.0.18</version>
         </dependency>
-
         <!--实现Excel下载导出-->
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -115,7 +114,69 @@
             <artifactId>jasypt-spring-boot-starter</artifactId>
             <version>2.0.0</version>
         </dependency>
+        <!-- freemarker实现邮件发送 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <!--消除冗余代码使用-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!--定时任务quartz-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
+        </dependency>
+        <!-- http client version is 4.5.3 -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+        <!-- redis java client version is 2.9.0  -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/javax.persistence/persistence-api -->
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>	<!-- 添加对jpa的支持，包含spring-data和Hibernate -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <!--jsp依赖 对应springboot版本为2.1.4-->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        <!--这个依赖直接包含了 logback-core 以及 slf4j-api的依赖-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
 
+
+        <dependency>
+            <groupId>net.sourceforge.nekohtml</groupId>
+            <artifactId>nekohtml</artifactId>
+            <version>1.9.22</version>
+        </dependency>
 
     </dependencies>
 
@@ -126,6 +187,33 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <!-- 配置将哪些资源文件(静态文件/模板文件/mapper文件)加载到tomcat输出目录里 -->
+        <resources>devtools
+            <!--<resource>
+                <directory>src/main/webapp/WEB-INF/views</directory>
+                &lt;!&ndash;如果使用springboot自带的tomcat启动，则使用如下配置jsp路径&ndash;&gt;
+                &lt;!&ndash;<targetPath>META-INF/resources</targetPath>&ndash;&gt;
+                &lt;!&ndash;如果使用maven启动本地tomcat启动，则使用如下配置&ndash;&gt;
+                <targetPath>/WEB-INF/views</targetPath>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>-->
+            <resource>
+                <directory>src/main/java</directory><!--java文件的路径-->
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+                <!-- <filtering>false</filtering>-->
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory><!--资源文件的路径-->
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+                <!-- <filtering>false</filtering>-->
+            </resource>
+        </resources>
     </build>
 
 </project>
