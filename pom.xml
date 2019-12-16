@@ -170,12 +170,27 @@
             <artifactId>logback-classic</artifactId>
             <version>1.2.3</version>
         </dependency>
-
-
         <dependency>
             <groupId>net.sourceforge.nekohtml</groupId>
             <artifactId>nekohtml</artifactId>
             <version>1.9.22</version>
+        </dependency>
+        <!--面向切面AOP-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <!-- swagger -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+        <!-- swagger-ui -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.5.0</version>
         </dependency>
 
     </dependencies>
@@ -188,7 +203,7 @@
             </plugin>
         </plugins>
         <!-- 配置将哪些资源文件(静态文件/模板文件/mapper文件)加载到tomcat输出目录里 -->
-        <resources>devtools
+        <resources>
             <!--<resource>
                 <directory>src/main/webapp/WEB-INF/views</directory>
                 &lt;!&ndash;如果使用springboot自带的tomcat启动，则使用如下配置jsp路径&ndash;&gt;
