@@ -28,7 +28,7 @@ import java.io.InputStream;
  * @author riemann
  * @date 2019/12/19 22:10
  */
-@Api(description = "上传EasyExcel接口")
+@Api(description = "上传、下载EasyExcel接口")
 @RestController
 public class UploadEasyExcelController {
 
