@@ -30,9 +30,9 @@ import java.io.InputStream;
  */
 @Api(description = "上传、下载EasyExcel接口")
 @RestController
-public class UploadEasyExcelController {
+public class EasyExcelController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UploadEasyExcelController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EasyExcelController.class);
 
     @Autowired
     private UploadEasyExcelService ueeService;
