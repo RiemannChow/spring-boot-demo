@@ -14,7 +14,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class UploadEasyExcelData {
+public class EasyExcelData {
 
     @ExcelProperty(value = "name", index = 0)
     private String name;
