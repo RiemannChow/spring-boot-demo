@@ -1,6 +1,6 @@
 package com.riemann.springbootdemo.dao;
 
-import com.riemann.springbootdemo.model.UploadEasyExcelData;
+import com.riemann.springbootdemo.model.EasyExcelData;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface EasyExcelDao {
 
-    void saveEasyExcelMappingData(@Param("ueeDatas") List<UploadEasyExcelData> ueeDatas);
+    void saveEasyExcelMappingData(@Param("ueeDatas") List<EasyExcelData> ueeDatas);
 
-    List<UploadEasyExcelData> selectAll();
+    List<EasyExcelData> selectAll();
 }
