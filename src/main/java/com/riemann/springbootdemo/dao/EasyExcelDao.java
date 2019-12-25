@@ -14,4 +14,6 @@ public interface EasyExcelDao {
     void saveEasyExcelMappingData(@Param("ueeDatas") List<EasyExcelData> ueeDatas);
 
     List<EasyExcelData> selectAll();
+
+    int uploadFileFromJson(@Param("eeDataList") List<EasyExcelData> eeDataList);
 }
