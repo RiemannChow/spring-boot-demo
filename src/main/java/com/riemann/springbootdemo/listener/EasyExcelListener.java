@@ -2,8 +2,8 @@ package com.riemann.springbootdemo.listener;
 
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
-import com.riemann.springbootdemo.model.UploadEasyExcelData;
-import com.riemann.springbootdemo.service.UploadEasyExcelService;
+import com.riemann.springbootdemo.model.EasyExcelData;
+import com.riemann.springbootdemo.service.EasyExcelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +16,9 @@ import java.util.List;
  * @author riemann
  * @date 2019/12/19 23:26
  */
-public class UploadEasyExcelListener extends AnalysisEventListener<UploadEasyExcelData> {
+public class EasyExcelListener extends AnalysisEventListener<EasyExcelData> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UploadEasyExcelListener.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EasyExcelListener.class);
 
     // 每隔1000条存储数据库，然后清理list，方便内存回收
     private static final int BATCH_COUNT = 1000;
@@ -27,17 +27,17 @@ public class UploadEasyExcelListener extends AnalysisEventListener<UploadEasyExc
     private int count = 0;
 
     @Autowired
-    private UploadEasyExcelService ueeService;
+    private EasyExcelService ueeService;
 
-    List<UploadEasyExcelData> ueeDatas = new ArrayList<>();
+    List<EasyExcelData> ueeDatas = new ArrayList<>();
 
-    public UploadEasyExcelListener(UploadEasyExcelService ueeService) {
+    public EasyExcelListener(EasyExcelService ueeService) {
         super();
         this.ueeService = ueeService;
     }
 
     @Override
-    public void invoke(UploadEasyExcelData ueeData, AnalysisContext analysisContext) {
+    public void invoke(EasyExcelData ueeData, AnalysisContext analysisContext) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("One record was Parsed, uploadEasyExcelData:{}", ueeData);
         }
