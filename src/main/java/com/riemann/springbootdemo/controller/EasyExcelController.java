@@ -6,10 +6,13 @@ import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
 import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
-import com.riemann.springbootdemo.listener.UploadEasyExcelListener;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.riemann.springbootdemo.dao.EasyExcelDao;
+import com.riemann.springbootdemo.listener.EasyExcelListener;
+import com.riemann.springbootdemo.model.EasyExcelData;
 import com.riemann.springbootdemo.model.ReturnT;
-import com.riemann.springbootdemo.model.UploadEasyExcelData;
-import com.riemann.springbootdemo.service.UploadEasyExcelService;
+import com.riemann.springbootdemo.service.EasyExcelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -25,9 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,7 +45,10 @@ public class EasyExcelController {
     private static final Logger LOGGER = LoggerFactory.getLogger(EasyExcelController.class);
 
     @Autowired
-    private UploadEasyExcelService ueeService;
+    private EasyExcelService ueeService;
+
+    @Autowired
+    private EasyExcelDao easyExcelDao;
 
     @ApiOperation(value = "上传excel", notes = "通过easy excel上传excel到db")
     @ApiImplicitParam(name = "serviceFile", value = "excel文件", paramType = "save", required = true)
@@ -57,8 +61,8 @@ public class EasyExcelController {
         InputStream in = null;
         try {
             in = serviceFile.getInputStream();
-            excelReader = EasyExcel.read(in, UploadEasyExcelData.class,
-                    new UploadEasyExcelListener(ueeService)).build();
+            excelReader = EasyExcel.read(in, EasyExcelData.class,
+                    new EasyExcelListener(ueeService)).build();
             ReadSheet readSheet = EasyExcel.readSheet(0).build();
             excelReader.read(readSheet);
         } catch (IOException e) {
@@ -111,12 +115,56 @@ public class EasyExcelController {
         HorizontalCellStyleStrategy styleStrategy =
                 new HorizontalCellStyleStrategy(headWriteCellStyle, contentWriteCellStyle);
 
-        List<UploadEasyExcelData> uploadEasyExcelData = ueeService.selectAll();
+        List<EasyExcelData> easyExcelData = ueeService.selectAll();
 
-        EasyExcel.write(response.getOutputStream(), UploadEasyExcelData.class)
+        EasyExcel.write(response.getOutputStream(), EasyExcelData.class)
                 .sheet("下载excel服务")
                 .registerWriteHandler(styleStrategy)
-                .doWrite(uploadEasyExcelData);
+                .doWrite(easyExcelData);
+    }
+
+    @PostMapping(value = "/uploadFileFromJson",produces = "application/json;charset=UTF-8")
+    public ResponseEntity<ReturnT<String>> uploadFileFromJson(@RequestParam(value = "mappingFile") MultipartFile mappingFile) {
+        if (mappingFile == null) {
+            return new ResponseEntity<>(new ReturnT<>(ReturnT.BAD_REQUEST, "Params can not be null"), HttpStatus.BAD_REQUEST);
+        }
+        InputStream is = null;
+        BufferedReader br = null;
+        StringBuffer sb = new StringBuffer();
+        String str = null;
+
+        try {
+            is = mappingFile.getInputStream();
+            br = new BufferedReader(new InputStreamReader(is));
+            while ((str = br.readLine()) != null) {
+                sb.append(str);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        JSONObject jsonObject = JSONObject.parseObject(sb.toString());
+        JSONArray jsonArray = jsonObject.getJSONArray("data");
+        List<EasyExcelData> eeDataList = JSONObject.parseArray(jsonArray.toJSONString(), EasyExcelData.class);
+
+        int count = 0;
+        try {
+            count = easyExcelDao.uploadFileFromJson(eeDataList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (count <= 0) {
+            LOGGER.warn("no data to upload");
+            return new ResponseEntity<>(new ReturnT<>(ReturnT.BAD_REQUEST, "no data to upload"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(new ReturnT<>("successfully imported " + count + " pieces of data"), HttpStatus.OK);
     }
 }
 
