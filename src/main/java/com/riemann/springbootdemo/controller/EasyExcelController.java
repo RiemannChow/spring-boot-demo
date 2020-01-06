@@ -6,11 +6,13 @@ import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
 import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.riemann.springbootdemo.dao.EasyExcelDao;
 import com.riemann.springbootdemo.listener.EasyExcelListener;
 import com.riemann.springbootdemo.model.EasyExcelData;
+import com.riemann.springbootdemo.model.LocatorData;
 import com.riemann.springbootdemo.model.ReturnT;
 import com.riemann.springbootdemo.service.EasyExcelService;
 import io.swagger.annotations.Api;
@@ -31,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -165,6 +168,82 @@ public class EasyExcelController {
             return new ResponseEntity<>(new ReturnT<>(ReturnT.BAD_REQUEST, "no data to upload"), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(new ReturnT<>("successfully imported " + count + " pieces of data"), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/arrayObjectNestingParse",produces = "application/json;charset=UTF-8")
+    public ReturnT<String> arrayObjectNestingParse(@RequestParam(value = "jsonFile") MultipartFile jsonFile) {
+        if (jsonFile == null) {
+            return new ReturnT<>(ReturnT.BAD_REQUEST, "Params can not be null");
+        }
+        InputStream is = null;
+        BufferedReader br = null;
+        StringBuffer sb = new StringBuffer();
+        String str = null;
+
+        try {
+            is = jsonFile.getInputStream();
+            br = new BufferedReader(new InputStreamReader(is));
+            while ((str = br.readLine()) != null) {
+                sb.append(str);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        List<LocatorData> locatorDataList = new ArrayList<>();
+
+        JSONArray jsonArray = JSONArray.parseArray(sb.toString());
+        for (int i = 0; i < jsonArray.size(); i++) {
+            LocatorData locatorData = new LocatorData();
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String categories = jsonObject.getString("categories");
+
+            String coordinate = jsonObject.getString("coordinate");
+            JSONObject coordinateObj = JSONObject.parseObject(coordinate);
+
+            String address = coordinateObj.getString("address");
+            String area = coordinateObj.getString("area");
+            String areaId = coordinateObj.getString("area_id");
+            String city = coordinateObj.getString("city");
+            String cityCode = coordinateObj.getString("city_code");
+            String district = coordinateObj.getString("district");
+            String districtCode = coordinateObj.getString("district_code");
+            String floor = coordinateObj.getString("floor");
+            String latitude = coordinateObj.getString("latitude");
+            String longitude = coordinateObj.getString("longitude");
+            String province = coordinateObj.getString("province");
+            String provinceCode = coordinateObj.getString("province_code");
+
+            String name = jsonObject.getString("name");
+            String phone = jsonObject.getString("phone");
+            String poiId = jsonObject.getString("poi_id");
+
+            locatorData.setCategories(categories);
+            locatorData.setAddress(address);
+            locatorData.setArea(area);
+            locatorData.setAreaId(areaId);
+            locatorData.setProvince(province);
+            locatorData.setProvinceCode(provinceCode);
+            locatorData.setCity(city);
+            locatorData.setCityCode(cityCode);
+            locatorData.setDistrict(district);
+            locatorData.setDistrictCode(districtCode);
+            locatorData.setFloor(floor);
+            locatorData.setLatitude(Double.parseDouble(latitude));
+            locatorData.setLongitude(Double.parseDouble(longitude));
+            locatorData.setName(name);
+            locatorData.setPhone(phone);
+            locatorData.setPoiId(poiId);
+            locatorDataList.add(locatorData);
+        }
+        LOGGER.info("locatorDataList: " + JSON.toJSONString(locatorDataList));
+        return new ReturnT<>(ReturnT.SUCCESS, JSON.toJSONString(locatorDataList));
     }
 }
 
