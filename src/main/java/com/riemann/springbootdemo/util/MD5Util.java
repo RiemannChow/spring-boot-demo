@@ -12,7 +12,6 @@ import java.security.NoSuchAlgorithmException;
 public class MD5Util {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MD5Util.class);
-
     private static final byte BIT_16 = 16;
     private static final byte BIT_32 = 32;
 
