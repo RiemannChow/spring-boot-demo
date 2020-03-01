@@ -20,5 +20,5 @@ public class FileUtil {
             LOGGER.error("Close io stream error", e);
         }
     }
-    }
+
 }
