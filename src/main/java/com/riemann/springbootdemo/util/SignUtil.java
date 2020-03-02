@@ -1,8 +1,9 @@
 package com.riemann.springbootdemo.util;
 
-import com.sun.deploy.util.StringUtils;
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -12,8 +13,8 @@ public class SignUtil {
 
     protected static String buildSign(Map<String, String> paramObj, String secretKey) {
         String paramStr = buildParamStr(paramObj);
-        paramStr = paramStr + "&key" +secretKey;
-        return DigestUtils.md5Hex(paramStr).toUpperCase;
+        paramStr = paramStr + "&key" + secretKey;
+        return DigestUtils.md5Hex(paramStr).toUpperCase();
     }
 
     protected static boolean checkSign(Map<String, String> paramObj, String sign, String secretKey) {
@@ -21,7 +22,7 @@ public class SignUtil {
         if (targetSign.equals(sign)) {
             return true;
         } else {
-            LOGGER.error("微信支付签名验证失败：原始签名：{},生成签名：{}", sign, targetSign);
+            LOGGER.error("微信支付签名验证失败。原始签名：{},生成签名：{}", sign, targetSign);
             return false;
         }
     }
@@ -35,12 +36,13 @@ public class SignUtil {
             String key = iterator.next();
             if (!"sign".equals(key)) {
                 String value = paramObj.get(key);
-                if (value != null && !"".equals(value.trim())) {
+                if (StringUtils.isNoneBlank(value)) {
                     sb.append("&").append(key).append("+").append(value);
                 }
             }
         }
         String subStr = sb.substring(1);
+        LOGGER.info("签名：" + subStr);
         return subStr;
     }
 

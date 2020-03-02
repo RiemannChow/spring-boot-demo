@@ -1,5 +1,7 @@
 package com.riemann.springbootdemo.model;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author riemann
  * @date 2020/01/06 23:55
@@ -24,7 +26,7 @@ public class LocatorData {
     // 区县code
     private String districtCode;
     // 楼层
-    private String floor;
+    private Integer floor;
     // 经度
     private Double latitude;
     // 维度
@@ -39,6 +41,49 @@ public class LocatorData {
     private String poiId;
 
     public LocatorData() {
+    }
+
+    public LocatorData(LocatorDataJsonToListEntity entity) {
+        this.categories = StringUtils.isEmpty(entity.getCategories()) ? "" : entity.getCategories();
+        this.area = StringUtils.isEmpty(entity.getArea()) ? "" : entity.getArea();
+        this.areaId = StringUtils.isEmpty(entity.getArea_id()) ? "" : entity.getArea_id();
+        this.province = StringUtils.isEmpty(entity.getProvince()) ? "" : entity.getProvince();
+        this.provinceCode = StringUtils.isEmpty(entity.getProvince_code()) ? "" : entity.getProvince_code();
+        this.city = StringUtils.isEmpty(entity.getCity()) ? "" : entity.getCity();
+        this.cityCode = StringUtils.isEmpty(entity.getCity_code()) ? "" : entity.getCity_code();
+        this.district = StringUtils.isEmpty(entity.getDistrict()) ? "" : entity.getDistrict();
+        this.districtCode = StringUtils.isEmpty(entity.getDistrict_code()) ? "" : entity.getDistrict_code();
+        if (StringUtils.isBlank(entity.getFloor().toString())) {
+            this.floor = 0;
+        } else {
+            if (Integer.getInteger(entity.getFloor().toString()) instanceof Integer) {
+                this.floor = Integer.getInteger(entity.getFloor().toString());
+            } else {
+                this.floor = 0;
+            }
+        }
+        if (StringUtils.isBlank(entity.getLatitude().toString())) {
+            this.latitude = 0.00000;
+        } else {
+            if (Double.valueOf(entity.getLatitude().toString()) instanceof Double) {
+                this.latitude = Double.valueOf(entity.getLatitude().toString());
+            } else {
+                this.latitude = 0.00000;
+            }
+        }
+        if (StringUtils.isBlank(entity.getLongitude().toString())) {
+            this.longitude = 0.00000;
+        } else {
+            if (Double.valueOf(entity.getLongitude().toString()) instanceof Double) {
+                this.longitude = Double.valueOf(entity.getLongitude().toString());
+            } else {
+                this.longitude = 0.00000;
+            }
+        }
+        this.name = StringUtils.isEmpty(entity.getName()) ? "" : entity.getName();
+        this.address = StringUtils.isEmpty(entity.getAddress()) ? "" : entity.getAddress();
+        this.phone = StringUtils.isEmpty(entity.getPhone()) ? "" : entity.getPhone();
+        this.poiId = StringUtils.isEmpty(entity.getPoiId()) ? "" : entity.getPoiId();
     }
 
     public String getCategories() {
@@ -113,11 +158,11 @@ public class LocatorData {
         this.districtCode = districtCode;
     }
 
-    public String getFloor() {
+    public Integer getFloor() {
         return floor;
     }
 
-    public void setFloor(String floor) {
+    public void setFloor(Integer floor) {
         this.floor = floor;
     }
 

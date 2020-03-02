@@ -10,25 +10,27 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.riemann.springbootdemo.dao.EasyExcelDao;
+import com.riemann.springbootdemo.enums.ReturnEnum;
 import com.riemann.springbootdemo.listener.EasyExcelListener;
+import com.riemann.springbootdemo.model.ApiResult;
 import com.riemann.springbootdemo.model.EasyExcelData;
 import com.riemann.springbootdemo.model.LocatorData;
-import com.riemann.springbootdemo.model.ReturnT;
+import com.riemann.springbootdemo.model.LocatorDataJsonToListEntity;
 import com.riemann.springbootdemo.service.EasyExcelService;
+import com.riemann.springbootdemo.util.JsonUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
@@ -50,15 +52,15 @@ public class EasyExcelController {
     @Autowired
     private EasyExcelService ueeService;
 
-    @Autowired
+    @Resource
     private EasyExcelDao easyExcelDao;
 
     @ApiOperation(value = "上传excel", notes = "通过easy excel上传excel到db")
     @ApiImplicitParam(name = "serviceFile", value = "excel文件", paramType = "save", required = true)
     @PostMapping(value = "/uploadEasyExcel",produces = "application/json;charset=UTF-8")
-    public ResponseEntity<ReturnT<String>> uploadEasyExcel(@RequestParam(value = "serviceFile") MultipartFile serviceFile) {
+    public ApiResult uploadEasyExcel(@RequestParam(value = "serviceFile") MultipartFile serviceFile) {
         if (serviceFile == null) {
-            return new ResponseEntity<>(new ReturnT<>(ReturnT.BAD_REQUEST, "Params can not be null"), HttpStatus.BAD_REQUEST);
+            return new ApiResult(ReturnEnum.PARAM_ERROR, "serviceFile can not be null");
         }
         ExcelReader excelReader = null;
         InputStream in = null;
@@ -77,7 +79,7 @@ public class EasyExcelController {
                 excelReader.finish();
             }
         }
-        return new ResponseEntity<>(new ReturnT<>("upload easyexcel success"), HttpStatus.OK);
+        return new ApiResult("upload easyexcel success");
     }
 
     private void close(Closeable closeable) {
@@ -127,9 +129,9 @@ public class EasyExcelController {
     }
 
     @PostMapping(value = "/uploadFileFromJson",produces = "application/json;charset=UTF-8")
-    public ResponseEntity<ReturnT<String>> uploadFileFromJson(@RequestParam(value = "mappingFile") MultipartFile mappingFile) {
+    public ApiResult uploadFileFromJson(@RequestParam(value = "mappingFile") MultipartFile mappingFile) {
         if (mappingFile == null) {
-            return new ResponseEntity<>(new ReturnT<>(ReturnT.BAD_REQUEST, "Params can not be null"), HttpStatus.BAD_REQUEST);
+            return new ApiResult(ReturnEnum.PARAM_ERROR, "Params can not be null");
         }
         InputStream is = null;
         BufferedReader br = null;
@@ -165,15 +167,15 @@ public class EasyExcelController {
 
         if (count <= 0) {
             LOGGER.warn("no data to upload");
-            return new ResponseEntity<>(new ReturnT<>(ReturnT.BAD_REQUEST, "no data to upload"), HttpStatus.BAD_REQUEST);
+            return new ApiResult(ReturnEnum.PARAM_ERROR, "no data to upload");
         }
-        return new ResponseEntity<>(new ReturnT<>("successfully imported " + count + " pieces of data"), HttpStatus.OK);
+        return new ApiResult("successfully imported " + count + " pieces of data");
     }
 
     @PostMapping(value = "/arrayObjectNestingParse",produces = "application/json;charset=UTF-8")
-    public ReturnT<String> arrayObjectNestingParse(@RequestParam(value = "jsonFile") MultipartFile jsonFile) {
+    public ApiResult arrayObjectNestingParse(@RequestParam(value = "jsonFile") MultipartFile jsonFile) {
         if (jsonFile == null) {
-            return new ReturnT<>(ReturnT.BAD_REQUEST, "Params can not be null");
+            return new ApiResult(ReturnEnum.PARAM_ERROR, "Params can not be null");
         }
         InputStream is = null;
         BufferedReader br = null;
@@ -197,53 +199,16 @@ public class EasyExcelController {
         }
 
         List<LocatorData> locatorDataList = new ArrayList<>();
-
+        List<LocatorDataJsonToListEntity> locatorDataJsonToList = null;
         JSONArray jsonArray = JSONArray.parseArray(sb.toString());
-        for (int i = 0; i < jsonArray.size(); i++) {
-            LocatorData locatorData = new LocatorData();
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            String categories = jsonObject.getString("categories");
 
-            String coordinate = jsonObject.getString("coordinate");
-            JSONObject coordinateObj = JSONObject.parseObject(coordinate);
-
-            String address = coordinateObj.getString("address");
-            String area = coordinateObj.getString("area");
-            String areaId = coordinateObj.getString("area_id");
-            String city = coordinateObj.getString("city");
-            String cityCode = coordinateObj.getString("city_code");
-            String district = coordinateObj.getString("district");
-            String districtCode = coordinateObj.getString("district_code");
-            String floor = coordinateObj.getString("floor");
-            String latitude = coordinateObj.getString("latitude");
-            String longitude = coordinateObj.getString("longitude");
-            String province = coordinateObj.getString("province");
-            String provinceCode = coordinateObj.getString("province_code");
-
-            String name = jsonObject.getString("name");
-            String phone = jsonObject.getString("phone");
-            String poiId = jsonObject.getString("poi_id");
-
-            locatorData.setCategories(categories);
-            locatorData.setAddress(address);
-            locatorData.setArea(area);
-            locatorData.setAreaId(areaId);
-            locatorData.setProvince(province);
-            locatorData.setProvinceCode(provinceCode);
-            locatorData.setCity(city);
-            locatorData.setCityCode(cityCode);
-            locatorData.setDistrict(district);
-            locatorData.setDistrictCode(districtCode);
-            locatorData.setFloor(floor);
-            locatorData.setLatitude(Double.parseDouble(latitude));
-            locatorData.setLongitude(Double.parseDouble(longitude));
-            locatorData.setName(name);
-            locatorData.setPhone(phone);
-            locatorData.setPoiId(poiId);
+        locatorDataJsonToList = JsonUtil.json2List(jsonArray.toString(), LocatorDataJsonToListEntity.class);
+        for (LocatorDataJsonToListEntity entity : locatorDataJsonToList) {
+            LocatorData locatorData = new LocatorData(entity);
             locatorDataList.add(locatorData);
         }
         LOGGER.info("locatorDataList: " + JSON.toJSONString(locatorDataList));
-        return new ReturnT<>(ReturnT.SUCCESS, JSON.toJSONString(locatorDataList));
+        return new ApiResult(JSON.toJSONString(locatorDataList));
     }
 }
 
