@@ -23,4 +23,6 @@ public interface UserSSOService {
 
     ResultSSO queryUserByToken(String token);
 
+    UserSSO getUserByToken(String token);
+
 }
