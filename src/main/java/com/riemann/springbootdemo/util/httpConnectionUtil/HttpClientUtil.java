@@ -1,4 +1,4 @@
-package com.riemann.springbootdemo.util.common.httpConnectionUtil;
+package com.riemann.springbootdemo.util.httpConnectionUtil;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.httpclient.*;

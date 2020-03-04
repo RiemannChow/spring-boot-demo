@@ -1,4 +1,4 @@
-package com.riemann.springbootdemo.util.common;
+package com.riemann.springbootdemo.util;
 
 /**
  * @author riemann
@@ -29,14 +29,19 @@ public class ParseSystemUtil {
      * @return
      */
     public static byte[] parseHexStr2Byte(String hexStr) {
+    //    String str = null;
+        System.out.println("hexStr" + hexStr);
+        byte[] result = null;
         if (hexStr.length() < 1)
             return null;
-        byte[] result = new byte[hexStr.length()/2];
+        result = new byte[hexStr.length()/2];
         for (int i = 0;i< hexStr.length()/2; i++) {
-            int high = Integer.parseInt(hexStr.substring(i*2, i*2+1), 16);
-            int low = Integer.parseInt(hexStr.substring(i*2+1, i*2+2), 16);
+            Integer high = Integer.valueOf(hexStr.substring(i*2, i*2+1));
+            Integer low = Integer.valueOf(hexStr.substring(i*2+1, i*2+2));
             result[i] = (byte) (high * 16 + low);
         }
+        //    str = new String(result, "UTF-8");
+        System.out.println("sout: " + result);
         return result;
     }
 

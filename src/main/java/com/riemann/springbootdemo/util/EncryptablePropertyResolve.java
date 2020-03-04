@@ -1,4 +1,4 @@
-package com.riemann.springbootdemo.util.common;
+package com.riemann.springbootdemo.util;
 
 import com.ulisesbocchio.jasyptspringboot.EncryptablePropertyResolver;
 import org.apache.commons.lang3.StringUtils;

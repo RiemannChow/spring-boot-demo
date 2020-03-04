@@ -1,5 +1,7 @@
 package com.riemann.springbootdemo.model;
 
+import org.apache.poi.ss.formula.functions.T;
+
 /**
  * @author riemann
  * @date 2019/04/28 21:50
@@ -14,6 +16,12 @@ public class ApiResponse {
 
     //返回给前台的信息
     private String message;
+
+    public ApiResponse(String statusCode, String type, String message) {
+        this.statusCode = statusCode;
+        this.type = type;
+        this.message = message;
+    }
 
     public String getStatusCode() {
         return statusCode;

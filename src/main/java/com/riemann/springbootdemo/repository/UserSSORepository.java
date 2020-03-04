@@ -61,16 +61,16 @@ public interface UserSSORepository extends PagingAndSortingRepository<UserSSO, L
      * 2. 建议使用@Query，可读性较高
      */
     // 获取某平台活跃用户数量
-    @Query(value="SELECT count(u.id) FROM User u WHERE u.platform = :platform AND u.updatedDate <= :updatedDate")
+    @Query(value="SELECT count(u.id) FROM UserSSO u WHERE u.platform = :platform AND u.updatedDate <= :updatedDate")
     long getActiveUserCount(@Param("platform")String platform, @Param("updatedDate")String updatedDate);
 
     // 通过邮箱或者手机号模糊查询用户信息
-    @Query(value="SELECT u FROM User u WHERE u.email LIKE %?1% OR u.iphone LIKE %?2%")
+    @Query(value="SELECT u FROM UserSSO u WHERE u.email LIKE %?1% OR u.iphone LIKE %?2%")
     List<UserSSO> findByEmailAndIhpneLike(String email, String iphone);
 
     // 修改用户邮箱
     @Modifying
-    @Query("UPDATE User u SET u.email = :email WHERE u.id = :id")
+    @Query("UPDATE UserSSO u SET u.email = :email WHERE u.id = :id")
     void updateUserEmail(@Param("id") Long id, @Param("email") String email);
 
 }

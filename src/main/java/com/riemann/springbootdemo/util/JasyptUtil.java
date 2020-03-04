@@ -1,4 +1,4 @@
-package com.riemann.springbootdemo.util.common;
+package com.riemann.springbootdemo.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
