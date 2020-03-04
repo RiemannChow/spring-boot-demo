@@ -12,7 +12,7 @@ SpringBoot 集成常用功能
 
 使用方法：
 
-![SpringBoot项目中集成AOP](https://blog.csdn.net/riemann_/article/details/100941237)
+[SpringBoot项目中集成AOP](https://blog.csdn.net/riemann_/article/details/100941237)
 
 2、cros跨域
 ---
@@ -25,7 +25,7 @@ SpringBoot 集成常用功能
 
 使用方法：
 
-![SpringBoot项目中实现跨域的解决方案](https://blog.csdn.net/riemann_/article/details/100087296)
+[SpringBoot项目中实现跨域的解决方案](https://blog.csdn.net/riemann_/article/details/100087296)
 
 3、线程池配置
 ---
@@ -37,7 +37,7 @@ SpringBoot 集成常用功能
 
 使用方法：配置好线程池后，在你所需要做异步任务处理的方法上加 '@Async'
 
-![Java并发编程中四种线程池](https://blog.csdn.net/riemann_/article/details/97617432)
+[Java并发编程中四种线程池](https://blog.csdn.net/riemann_/article/details/97617432)
 
 
 4、swagger
@@ -50,7 +50,7 @@ SpringBoot 集成常用功能
 
 使用方法：
 
-![SpringBoot项目中集成Swagger2](https://blog.csdn.net/riemann_/article/details/103604132)
+[SpringBoot项目中集成Swagger2](https://blog.csdn.net/riemann_/article/details/103604132)
 
 5、Quartz定时调度 
 ---
@@ -62,7 +62,7 @@ SpringBoot 集成常用功能
 
 使用方法：
 
-![SpringBoot项目中集成Quartz实现定时调度任务](https://blog.csdn.net/riemann_/article/details/93405380)
+[SpringBoot项目中集成Quartz实现定时调度任务](https://blog.csdn.net/riemann_/article/details/93405380)
 
 6、FreeMarker发送邮件
 ---
@@ -74,7 +74,7 @@ SpringBoot 集成常用功能
 
 使用方法：
 
-![SpringBoot项目中集成FreeMarker实现模板发送邮件](https://blog.csdn.net/riemann_/article/details/93380224)
+[SpringBoot项目中集成FreeMarker实现模板发送邮件](https://blog.csdn.net/riemann_/article/details/93380224)
 
 7、Log Forging日志伪造
 ---
@@ -86,7 +86,7 @@ SpringBoot 集成常用功能
 
 使用方法：
 
-![SpringBoot项目中解决Fortify漏洞Log Forging日志伪造](https://blog.csdn.net/riemann_/article/details/93358316)
+[SpringBoot项目中解决Fortify漏洞Log Forging日志伪造](https://blog.csdn.net/riemann_/article/details/93358316)
 
 8、自定义异常处理机制
 ---
@@ -98,7 +98,7 @@ SpringBoot 集成常用功能
 
 使用方法：
 
-![SpringBoot的异常处理机制](https://blog.csdn.net/riemann_/article/details/91346014)
+[SpringBoot的异常处理机制](https://blog.csdn.net/riemann_/article/details/91346014)
 
 9、jasypt配置文件自定义加密机制
 ---
@@ -110,7 +110,7 @@ SpringBoot 集成常用功能
 
 使用方法：
 
-![SpringBoot项目中基于jasypt实现mysql配置文件自定义密码加密](https://blog.csdn.net/riemann_/article/details/92245115)
+[SpringBoot项目中基于jasypt实现mysql配置文件自定义密码加密](https://blog.csdn.net/riemann_/article/details/92245115)
 
 10、自定义日志配置
 ---
@@ -122,7 +122,7 @@ SpringBoot 集成常用功能
 
 使用方法：
 
-![SpringBoot项目中使用Logback实现多环境日志配置详解](https://blog.csdn.net/riemann_/article/details/100047010)
+[SpringBoot项目中使用Logback实现多环境日志配置详解](https://blog.csdn.net/riemann_/article/details/100047010)
 
 11、自定义Filter过滤器、Listener监听器、Interceptor拦截器和Servlet容器
 ---
@@ -134,7 +134,7 @@ SpringBoot 集成常用功能
 
 使用方法：
 
-![SpringBoot项目中自定义Filter过滤器、Listener监听器、Interceptor拦截器和Servlet容器](https://blog.csdn.net/riemann_/article/details/100905825)
+[SpringBoot项目中自定义Filter过滤器、Listener监听器、Interceptor拦截器和Servlet容器](https://blog.csdn.net/riemann_/article/details/100905825)
 
 12、shiro权限管控
 ---
@@ -143,7 +143,7 @@ SpringBoot 集成常用功能
 
 使用方法：
 
-![SpringBoot项目中集成Shiro进行权限管控](https://blog.csdn.net/riemann_/article/details/101177236)
+[SpringBoot项目中集成Shiro进行权限管控](https://blog.csdn.net/riemann_/article/details/101177236)
 
 13、EasyExcel上传下载文件
 ---
@@ -157,7 +157,7 @@ Java解析、生成Excel比较有名的框架有Apache poi、jxl。但他们都�
 
 使用方法：
 
-![SpringBoot项目中集成EasyExcel实现Excel文件上传至MySQL](https://blog.csdn.net/riemann_/article/details/103639254)
+[SpringBoot项目中集成EasyExcel实现Excel文件上传至MySQL](https://blog.csdn.net/riemann_/article/details/103639254)
 
 14、JAXB实现XML与Java对象的互相转换
 ---
@@ -167,13 +167,13 @@ Java解析、生成Excel比较有名的框架有Apache poi、jxl。但他们都�
 
 使用场景：
 
-(1)、在项目中，有时候会有很多的XML文件，但如果可以将这些文件通过对象的方式去操作，就会减少很多操作问题，而且更加符合程序员的编码方式，
-(2)、在项目中，有时候会遇到一个页面中存在很多的实体类中的数据，而且有时候有些数据不是必需的，就是说可以通过DTO来编写这些实体类，但有时候需要将            这些DTO进行预先存储，不是存储到数据库中，这样就有两种思路，可以存储在内存中，也可以存储在硬盘上，此时就可以通过将Java对象转换成XML文件存            储，或者变成String类型进行存储在内存中。
-(3)、一个页面中有很多个模块构成，但是这些模块都是属于一个整体的模块，当用户有操作其中几个模块的时候，但操作后的数据不是最终的数据，那这个时候首            先要保存当前页面中的数据（Done），然后到其他页面进行其他操作后再转到这个页面，那么之前那个页面中的数据应该还会存在，用户可以方便查看。但            是由于模块较多，如果之前就存到数据库中就会造成浪费，因为其不是最终的保存效果，而当用户想进行保存（Save），此时才进行将最终的数据保存到数            据库中。在这个过程中就会用到大量的临时数据，而解决这个问题很好的方法就是可以用XML保存页面中当前的数据。
+(1)、在项目中，有时候会有很多的XML文件，但如果可以将这些文件通过对象的方式去操作，就会减少很多操作问题，而且更加符合程序员的编码方式，<br>
+(2)、在项目中，有时候会遇到一个页面中存在很多的实体类中的数据，而且有时候有些数据不是必需的，就是说可以通过DTO来编写这些实体类，但有时候需要将            这些DTO进行预先存储，不是存储到数据库中，这样就有两种思路，可以存储在内存中，也可以存储在硬盘上，此时就可以通过将Java对象转换成XML文件存            储，或者变成String类型进行存储在内存中。<br>
+(3)、一个页面中有很多个模块构成，但是这些模块都是属于一个整体的模块，当用户有操作其中几个模块的时候，但操作后的数据不是最终的数据，那这个时候首            先要保存当前页面中的数据（Done），然后到其他页面进行其他操作后再转到这个页面，那么之前那个页面中的数据应该还会存在，用户可以方便查看。但            是由于模块较多，如果之前就存到数据库中就会造成浪费，因为其不是最终的保存效果，而当用户想进行保存（Save），此时才进行将最终的数据保存到数            据库中。在这个过程中就会用到大量的临时数据，而解决这个问题很好的方法就是可以用XML保存页面中当前的数据。<br>
 
 使用方法：
 
-![SpringBoot项目中集成JAXB实现XML与Java对象的互相转换](https://blog.csdn.net/riemann_/article/details/100147789)
+[SpringBoot项目中集成JAXB实现XML与Java对象的互相转换](https://blog.csdn.net/riemann_/article/details/100147789)
 
 
 
