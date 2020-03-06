@@ -1,7 +1,7 @@
 package com.riemann.springbootdemo.enums;
 
 /**
- * 定位赛类型枚举类
+ * 定位商类型枚举类
  */
 public enum PoiTypeEnum {
 
