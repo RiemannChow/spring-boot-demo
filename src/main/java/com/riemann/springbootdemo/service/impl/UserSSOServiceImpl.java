@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
@@ -31,7 +32,7 @@ public class UserSSOServiceImpl implements UserSSOService {
     @Autowired
     private UserSSORepository userSSORepository;
 
-    @Autowired
+    @Resource
     private JedisClient jedisClient;
 
     @Value("${REDIS_USER_SESSION_KEY}")
@@ -66,7 +67,7 @@ public class UserSSOServiceImpl implements UserSSOService {
         userSSO.setPassword(null);
         userSSO.setSalt(null);
         // 把用户信息写入 redis
-        jedisClient.set(REDIS_USER_SESSION_KEY + ":" + token, JsonUtil.objectToJson(userSSO));
+        jedisClient.set(REDIS_USER_SESSION_KEY + ":" + token, JsonUtil.bean2Json(userSSO));
         // userSSO 已经是持久化对象了，被保存在了session缓存当中，若userSSO又重新修改了属性值，那么在提交事务时，此时 hibernate对象就会拿当前这个user对象和保存在session缓存中的user对象进行比较，如果两个对象相同，则不会发送update语句，否则，如果两个对象不同，则会发出update语句。
         userSSO.setPassword(userPassword);
         userSSO.setSalt(userSalt);
@@ -95,8 +96,13 @@ public class UserSSOServiceImpl implements UserSSOService {
         // 更新过期时间
         jedisClient.expire(REDIS_USER_SESSION_KEY + ":" + token, SSO_SESSION_EXPIRE);
         // 返回用户信息
-        return ResultSSO.ok(JsonUtil.jsonToPojo(json, UserSSO.class));
+        return ResultSSO.ok(JsonUtil.json2Bean(json, UserSSO.class));
 
+    }
+
+    @Override
+    public UserSSO getUserByToken(String token) {
+        return null;
     }
 
 }
