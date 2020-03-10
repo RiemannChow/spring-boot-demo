@@ -1,6 +1,6 @@
 package com.riemann.springbootdemo.service;
 
-import com.riemann.springbootdemo.model.ApiResponse;
+import com.riemann.springbootdemo.model.ApiResult;
 import com.riemann.springbootdemo.model.ExportExcelData;
 
 /**
@@ -9,6 +9,6 @@ import com.riemann.springbootdemo.model.ExportExcelData;
  */
 public interface ExportExcelService {
 
-    ApiResponse exportExcel(ExportExcelData exportExcelData);
+    ApiResult exportExcel(ExportExcelData exportExcelData);
 
 }
