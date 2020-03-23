@@ -1,12 +1,9 @@
 package com.riemann.springbootdemo.service.impl;
 
-import com.riemann.springbootdemo.model.ApiResponse;
-import com.riemann.springbootdemo.model.ExportExcelData;
-import com.riemann.springbootdemo.model.SheetData;
-import com.riemann.springbootdemo.model.TabularData;
+import com.riemann.springbootdemo.enums.ReturnEnum;
+import com.riemann.springbootdemo.model.*;
 import com.riemann.springbootdemo.service.ExportExcelService;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -28,37 +25,37 @@ public class ExportExcelServiceImpl implements ExportExcelService {
     private static final Logger logger = LoggerFactory.getLogger(ExportExcelServiceImpl.class);
 
     @Override
-    public ApiResponse exportExcel(ExportExcelData exportExcelData) {
+    public ApiResult exportExcel(ExportExcelData exportExcelData) {
 
-        ApiResponse apiResponse = new ApiResponse();
+        ApiResult apiResult = new ApiResult();
         String fileName = exportExcelData.getFileName();
         int templateType = exportExcelData.getTemplateType();
         List<SheetData> sheetDataList = exportExcelData.getSheetData();
 
         HSSFWorkbook wb = new HSSFWorkbook();//创建工作薄
-        //    HSSFSheet sheet = wb.createSheet();
+        HSSFSheet sheet = wb.createSheet();
         //创建字体样式
         HSSFFont font = wb.createFont();
         font.setFontName("宋体");//使用宋体
         font.setFontHeightInPoints((short) 12);//字体大小
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);//加粗
+        //font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);//加粗
         //创建单元格样式style
         HSSFCellStyle style = wb.createCellStyle();
         style.setFont(font);//将字体注入
         style.setWrapText(true);//自动换行
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 上下居中
-        style.setBorderTop((short) 1);//设置边框大小
-        style.setBorderBottom((short) 1);
-        style.setBorderLeft((short) 1);
-        style.setBorderRight((short) 1);
+//        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中
+//        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 上下居中
+//        style.setBorderTop((short) 1);//设置边框大小
+//        style.setBorderBottom((short) 1);
+//        style.setBorderLeft((short) 1);
+//        style.setBorderRight((short) 1);
 
         //循环遍历有多少个sheeet页
         for (int i = 0; i < sheetDataList.size(); i++) {
             SheetData sheetData = sheetDataList.get(i);
             String sheetName = sheetData.getSheetName();
             List<TabularData> tabularData = sheetData.getTabularData();
-            HSSFSheet sheet = wb.createSheet();//创建工作表
+            // HSSFSheet sheet = wb.createSheet();//创建工作表
             wb.setSheetName(i, sheetName);
 
             for(TabularData tab : tabularData) {
@@ -79,13 +76,11 @@ public class ExportExcelServiceImpl implements ExportExcelService {
         }
 
         if (downloadExcel(wb)){
-            apiResponse.setStatusCode("200");
-            apiResponse.setMessage("export excel success");
+            return new ApiResult(ReturnEnum.SUCCESS);
+
         } else {
-            apiResponse.setStatusCode("400");
-            apiResponse.setMessage("export excel failed");
+            return new ApiResult(ReturnEnum.FAILED);
         }
-        return apiResponse;
     }
 
     public boolean downloadExcel(HSSFWorkbook wb) {

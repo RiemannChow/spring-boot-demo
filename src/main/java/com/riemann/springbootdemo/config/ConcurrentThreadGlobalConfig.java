@@ -16,7 +16,7 @@ public class ConcurrentThreadGlobalConfig {
     public ThreadPoolTaskExecutor defaultThreadPool() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         //核心线程数目
-        executor.setCorePoolSize(4);
+        executor.setCorePoolSize(8);
         //指定最大线程数
         executor.setMaxPoolSize(300);
         //队列中最大的数目

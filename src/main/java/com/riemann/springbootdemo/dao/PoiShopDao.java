@@ -15,4 +15,7 @@ public interface PoiShopDao {
     Integer updateBatchShopData(List<PoiShopEntity> list);
 
     List<PoiShopEntity> selectSelectiveList(List<PoiShopEntity> shopEntityList);
+
+    void batchInsertOrUpdate(List<PoiShopEntity> shopEntityList);
+
 }
