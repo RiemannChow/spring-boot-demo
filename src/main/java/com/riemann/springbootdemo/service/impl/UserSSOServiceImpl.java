@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
@@ -33,7 +34,7 @@ public class UserSSOServiceImpl implements UserSSOService {
     @Autowired
     private UserSSORepository userSSORepository;
 
-    @Autowired
+    @Resource
     private JedisClient jedisClient;
 
     @Value("${REDIS_USER_SESSION_KEY}")
@@ -110,7 +111,6 @@ public class UserSSOServiceImpl implements UserSSOService {
         jedisClient.expire(REDIS_USER_SESSION_KEY + ":" + token, SSO_SESSION_EXPIRE);
         // 返回用户信息
         return ResultSSO.ok(JsonUtil.json2Bean(json, UserSSO.class));
-
     }
 
     @Override
