@@ -39,6 +39,19 @@ spring:
   mvc:
     static-path-pattern:
 
+  mail:
+    protocol: smtp
+    host: smtp.qq.com
+    port: 465
+    auth: true
+    username: 754798xxx@qq.com
+    password: lcnzyqiqovembcfb
+    default-encoding: utf-8
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
 
 # Logger Config
 logging:
