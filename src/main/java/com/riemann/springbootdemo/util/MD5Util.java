@@ -1,8 +1,10 @@
 package com.riemann.springbootdemo.util;
 
+import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -85,6 +87,21 @@ public class MD5Util {
             sb.append(Integer.toHexString(i));
         }
         return sb.toString();
+    }
+
+    public final static String encodeInputStream(InputStream fis) {
+        MessageDigest md5 = null;
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+            byte[] buffer = new byte[8192];
+            int len;
+            while ((len = fis.read(buffer)) != -1) {
+                md5.update(buffer, 0, len);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new String(Hex.encodeHex(md5.digest()));
     }
 
 }
