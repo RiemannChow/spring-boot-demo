@@ -10,7 +10,9 @@ import java.nio.file.Paths;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -68,6 +70,52 @@ public class FileUtil {
             Files.createDirectories(absPath);
         }
         return dir;
+    }
+
+    public static List<String> readFileData(String path, Integer offset, Integer limit) {
+        Integer current = (offset - 1) * limit;
+        Integer pageSize = offset * limit;
+        BufferedReader reader = null;
+        // 使用ArrayList来存储每行读取到的字符串
+        List<String> list = new ArrayList<>();
+        try {
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"));
+            String str = null;
+            int i = 0;
+            while ((str = reader.readLine()) != null) {
+                i++;
+                if (i > current) {
+                    if (i <= pageSize) {
+                        list.add(str);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("FileUtil readFileData exception", e);
+            e.printStackTrace();
+        } finally {
+            FileUtil.close(reader);
+        }
+        return list;
+    }
+
+    public static int countLines(String path) {
+        BufferedReader reader = null;
+        int lines = 0;
+        try {
+            reader = new BufferedReader(new FileReader(path));
+            while (reader.readLine() != null) {
+                lines++;
+            }
+        } catch (Exception e) {
+            LOGGER.error("FileUtil countLines exception", e);
+            e.printStackTrace();
+        } finally {
+            FileUtil.close(reader);
+        }
+        return lines;
     }
 
 }
