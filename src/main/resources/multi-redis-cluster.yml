@@ -1,0 +1,19 @@
+spring:
+  redis:
+    cluster:
+      # userProfilePool
+      pool1:
+        nodes: 10.101.30.18:11117,10.101.39.148:11117,10.101.29.22:11117
+        timeout: 20000
+        maxIdle: 300
+        maxWaitMillis: 1000
+        maxTotal: 1000
+        minEvictableIdleTimeMillis: 300000
+      # dataStreamPool
+      pool2:
+        nodes: 10.101.30.19:11117,10.101.39.149:11117,10.101.29.23:11117
+        timeout: 20000
+        maxIdle: 300
+        maxWaitMillis: 1000
+        maxTotal: 1000
+        minEvictableIdleTimeMillis: 300000
