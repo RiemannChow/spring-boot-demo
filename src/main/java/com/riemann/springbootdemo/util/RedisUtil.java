@@ -1,14 +1,14 @@
 package com.riemann.springbootdemo.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -558,6 +558,49 @@ public class RedisUtil {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    //  ============================== ZSet ==============================
+
+    private static final String DELANDZADDSCRIPT =
+            "if redis.call('zcard', KEYS[1]) > 0 then\n" +
+            "   redis.call('del', KEYS[1])\n" +
+            "   for i, v in pairs(ARGV) do\n" +
+            "       if i > (table.getn(ARGV)) / 2 then\n" +
+            "           break\n" +
+            "       end\n" +
+            "       redis.call('zadd', KEYS[1], ARGV[2*i - 1], ARGV[2*i])\n" +
+            "   end\n" +
+            "   return 1\n" +
+            "else\n" +
+            "   for i, v in pairs(ARGV) do\n" +
+            "       if i > (table.getn(ARGV)) / 2 then\n" +
+            "           break\n" +
+            "       end\n" +
+            "       redis.call('zadd',KEYS[1], ARGV[2*i - 1], ARGV[2*i])\n" +
+            "   end\n" +
+            "   return 1\n" +
+            "end";
+
+    private RedisScript<Long> redisDelAndZaddScript = new DefaultRedisScript<>(DELANDZADDSCRIPT, Long.class);
+
+    /**
+     * 刪除及插入
+     * @param key 键
+     * @param val 批量值
+     */
+    public void delAndZaddExec(String key, Set<ZSetOperations.TypedTuple<String>> val) {
+        if (StringUtils.isEmpty(key)) {
+            throw new IllegalArgumentException();
+        }
+        Object[] args = new Object[val.size()*2];
+        int i= 0;
+        for (ZSetOperations.TypedTuple<String> it : val ) {
+            args[2*i] = String.valueOf(it.getScore());
+            args[2*i + 1] = it.getValue();
+            i++;
+        }
+        stringRedisTemplate.execute(redisDelAndZaddScript, Collections.singletonList(key), args);
     }
 
 }
