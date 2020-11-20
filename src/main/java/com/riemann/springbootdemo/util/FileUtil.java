@@ -101,6 +101,25 @@ public class FileUtil {
         return list;
     }
 
+    public static List<String> readFileData(String path) {
+        List<String> list = new ArrayList<>();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"));
+            String str = null;
+            int i = 0;
+            while ((str = reader.readLine()) != null) {
+                list.add(str);
+            }
+        } catch (Exception e) {
+            LOGGER.error("FileUtil readFileData exception", e);
+            e.printStackTrace();
+        } finally {
+            FileUtil.close(reader);
+        }
+        return list;
+    }
+
     public static int countLines(String path) {
         BufferedReader reader = null;
         int lines = 0;
@@ -116,6 +135,27 @@ public class FileUtil {
             FileUtil.close(reader);
         }
         return lines;
+    }
+
+    public static void writeToDisk(Object result, String filePath){
+        File file = new File(filePath);
+        FileOutputStream fos = null;
+        OutputStreamWriter osw = null;
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+                fos = new FileOutputStream(file);
+            } else {
+                fos = new FileOutputStream(file,true);
+            }
+            osw = new OutputStreamWriter(fos, "UTF-8");
+            osw.write(result.toString());
+            osw.write("\r\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            FileUtil.close(osw);
+        }
     }
 
 }
